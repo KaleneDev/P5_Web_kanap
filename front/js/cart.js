@@ -187,6 +187,7 @@ const confirmation = () => {
             checkValueInput();
         });
     }
+
     order.addEventListener("click", function (e) {
         const allStorage = () => {
             let values = [];
@@ -196,45 +197,55 @@ const confirmation = () => {
             for (let index = 0; index < i; index++) {
                 values.push(localStorage.getItem(keys[index]));
             }
-
             return values;
         };
-
-        let cart = JSON.parse(allStorage());
-        let order = [];
-        let form = [];
+        let cart = allStorage();
+        let contact = {};
+        let products = [];
         if (
-            cart
-            // && firstName.value &&
+            cart.length !== 0
+            // &&
             // firstName.value &&
+            // lastName.value &&
             // address.value &&
             // city.value &&
             // email.value
         ) {
-            order.push(cart);
-            form.push("Name: " + firstName.value);
-            form.push("LastName: " + lastName.value);
-            form.push("address: " + address.value);
-            form.push("city: " + city.value);
-            form.push("email: " + email.value);
+            for (let i = 0; i < cart.length; i++) {
+                products.push(JSON.parse(allStorage()[i])._id);
+            }
+            contact.firstName = firstName.value;
+            contact.lastName = lastName.value;
+            contact.address = address.value;
+            contact.city = city.value;
+            contact.email = email.value;
+            // POST
+            const send = { contact, products };
 
-            // console.log(order);
-            // console.log(form);
-        } else {
+            const promise01 = fetch(
+                "http://localhost:3000/api/products/order",
+                {
+                    method: "POST",
+                    body: JSON.stringify(send),
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
+            )
+                .then((response) => {
+                    return response.json();
+                })
+                .then((data) => {
+                    localStorage.clear();
+                    localStorage.setItem("orderId", data.orderId);
+                    document.location.href =
+                        "http://127.0.0.1:5500/front/html/confirmation.html";
+                });
+            promise01();
+        } else if (cart.length === 0) {
+            alert("Pas de produit");
             console.log("error");
         }
-
-        const send = { order, form };
-        console.log(send);
-
-        const promise01 = fetch("http://localhost:3000/api/", {
-            method: "POST",
-            body: JSON.stringify(send),
-            headers: {
-                "Content-Type": "application/json",
-            },
-        });
-        console.log(promise01);
     });
 };
 display();
