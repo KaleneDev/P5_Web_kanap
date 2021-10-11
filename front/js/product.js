@@ -15,14 +15,14 @@ const display = () => {
     } else {
         const img = document.createElement("img");
         const item_img = document.getElementsByClassName("item__img");
-
+        document.title = products.name;
         img.setAttribute("src", products.imageUrl);
         img.setAttribute("alt", products.altTxt);
 
         item_img[0].appendChild(img);
 
         title.textContent = `${products.name}`;
-        price.textContent = `${(products.price / 100).toFixed(2)}`;
+        price.textContent = `${(products.price / 10).toFixed(2)}`;
         description.textContent = `${products.description}`;
 
         let colorsProduct = [];
@@ -54,7 +54,7 @@ const addToCard = () => {
                 productLocalStorageName,
                 JSON.stringify(products)
             );
-            console.log("test1");
+            console.log(products.name + "a bien était ajouter a votre panier");
         } else if (localStorage.getItem(productLocalStorageName) !== null) {
             products.quantity = parseInt(quantity);
             products.color = color;
@@ -62,6 +62,7 @@ const addToCard = () => {
                 productLocalStorageName,
                 JSON.stringify(products)
             );
+            console.log(products.name + "a bien était ajouter a votre panier");
         } else {
             console.log("Une erreur est survenue");
         }
