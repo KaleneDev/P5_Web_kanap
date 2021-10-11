@@ -188,7 +188,8 @@ const confirmation = () => {
         });
     }
 
-    order.addEventListener("click", async () => {
+    order.addEventListener("click", (e) => {
+        e.preventDefault();
         const allStorage = () => {
             let values = [];
             let keys = Object.keys(localStorage);
@@ -227,6 +228,7 @@ const confirmation = () => {
                     "Content-Type": "application/json",
                 },
             };
+
             fetch("http://localhost:3000/api/products/order", option)
                 .then((response) => {
                     return response.json();
@@ -234,12 +236,13 @@ const confirmation = () => {
                 .then((data) => {
                     localStorage.clear();
                     localStorage.setItem("orderId", data.orderId);
-                    alert("Votre commande à bien était pris en compte");
                     document.location.href =
                         "http://127.0.0.1:5500/front/html/confirmation.html";
                 });
+
+            // alert("Votre commande à bien était pris en compte");
         } else if (cart.length === 0) {
-            alert("Pas de produit");
+            alert("Pas de produit dans votre panier");
             console.log("error");
         }
     });
