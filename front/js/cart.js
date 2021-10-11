@@ -188,7 +188,7 @@ const confirmation = () => {
         });
     }
 
-    order.addEventListener("click", function (e) {
+    order.addEventListener("click", async () => {
         const allStorage = () => {
             let values = [];
             let keys = Object.keys(localStorage);
@@ -203,13 +203,12 @@ const confirmation = () => {
         let contact = {};
         let products = [];
         if (
-            cart.length !== 0
-            // &&
-            // firstName.value &&
-            // lastName.value &&
-            // address.value &&
-            // city.value &&
-            // email.value
+            cart.length !== 0 &&
+            firstName.value &&
+            lastName.value &&
+            address.value &&
+            city.value &&
+            email.value
         ) {
             for (let i = 0; i < cart.length; i++) {
                 products.push(JSON.parse(allStorage()[i])._id);
@@ -221,27 +220,24 @@ const confirmation = () => {
             contact.email = email.value;
             // POST
             const send = { contact, products };
-
-            const promise01 = fetch(
-                "http://localhost:3000/api/products/order",
-                {
-                    method: "POST",
-                    body: JSON.stringify(send),
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                }
-            )
+            const option = {
+                method: "POST",
+                body: JSON.stringify(send),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            };
+            fetch("http://localhost:3000/api/products/order", option)
                 .then((response) => {
                     return response.json();
                 })
                 .then((data) => {
                     localStorage.clear();
                     localStorage.setItem("orderId", data.orderId);
+                    alert("Votre commande à bien était pris en compte");
                     document.location.href =
                         "http://127.0.0.1:5500/front/html/confirmation.html";
                 });
-            promise01();
         } else if (cart.length === 0) {
             alert("Pas de produit");
             console.log("error");
