@@ -158,17 +158,30 @@ const confirmation = () => {
         });
         order.addEventListener("click", (e) => {
             const checkValueInput = () => {
-                if (!firstName.value) {
+                function validateEmail(email) {
+                    const re =
+                        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                    return re.test(String(email).toLowerCase());
+                }
+                function validateName(name) {
+                    const re = /^[a-zA-Z ]([^0-9]*)$/;
+                    return re.test(String(name));
+                }
+                function validateAddress(address) {
+                    const re = /^[^*|\":<>[\]{}`\\()';@&$]+$/;
+                    return re.test(String(address));
+                }
+                if (!validateName(firstName.value)) {
                     firstNameErrorMsg.textContent = "Prénom incorrect !";
                 } else {
                     firstNameErrorMsg.textContent = "";
                 }
-                if (!lastName.value) {
+                if (!validateName(lastName.value)) {
                     lastNameErrorMsg.textContent = "Nom incorrect !";
                 } else {
                     lastNameErrorMsg.textContent = "";
                 }
-                if (!address.value) {
+                if (!validateAddress(address.value)) {
                     addressErrorMsg.textContent = "Adresse incorrect !";
                 } else {
                     addressErrorMsg.textContent = "";
@@ -178,7 +191,8 @@ const confirmation = () => {
                 } else {
                     cityErrorMsg.textContent = "";
                 }
-                if (!email.value) {
+
+                if (!validateEmail(email.value)) {
                     emailErrorMsg.textContent = "Email incorrect !";
                 } else {
                     emailErrorMsg.textContent = "";

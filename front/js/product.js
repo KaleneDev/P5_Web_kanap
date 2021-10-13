@@ -56,17 +56,25 @@ const addToCard = () => {
             );
             console.log(products.name + "a bien était ajouter a votre panier");
         } else if (localStorage.getItem(productLocalStorageName) !== null) {
+            const warningProductExist = document.querySelector(
+                ".item__content__settings__quantity span"
+            );
             products.quantity = parseInt(quantity);
             products.color = color;
             localStorage.setItem(
                 productLocalStorageName,
                 JSON.stringify(products)
             );
+            warningProductExist.textContent =
+                "Vous avez " + quantity + " exemplaire de ce produit !";
+            warningProductExist.style = "color: #D33513";
             console.log(products.name + "a bien était ajouter a votre panier");
         } else {
             console.log("Une erreur est survenue");
         }
     });
+};
+const checkProductCurrently = () => {
     const allStorage = () => {
         let values = [];
         let keys = Object.keys(localStorage);
@@ -75,12 +83,37 @@ const addToCard = () => {
         for (let index = 0; index < i; index++) {
             values.push(localStorage.getItem(keys[index]));
         }
-        return values;
+        return keys;
     };
-    allStorage().forEach((element) => {
-        console.log(JSON.parse(element));
+    const item__content__settings__quantity = document.querySelector(
+        ".item__content__settings__quantity"
+    );
+    const warningProductExist = document.createElement("span");
+    item__content__settings__quantity.appendChild(warningProductExist);
+    allStorage().map((key) => {
+        colors.addEventListener("change", (e) => {
+            color = e.target.value;
+            nameProduct = e.path[3].querySelector(
+                ".item__content__titlePrice h1"
+            ).textContent;
+            const keyConca = nameProduct + " color: " + color;
+            if (keyConca === key) {
+                quantity = JSON.parse(localStorage.getItem(key)).quantity;
+                warningProductExist.textContent =
+                    "Vous avez déjà " +
+                    quantity +
+                    " exemplaire de ce produit !";
+                warningProductExist.style = "color: #D33513";
+                console.log("Same product");
+            } else {
+                warningProductExist.textContent = "";
+
+                console.log("Not same product");
+            }
+        });
     });
 };
 fetchProduct()
     .then(() => display())
     .then(() => addToCard());
+checkProductCurrently();
