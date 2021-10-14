@@ -156,21 +156,23 @@ const confirmation = () => {
             };
             checkValueInput();
         });
+
+        function validateEmail(email) {
+            const re =
+                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return re.test(String(email).toLowerCase());
+        }
+        function validateName(name) {
+            const re = /^[a-zA-Z ]([^0-9]*)$/;
+            // const re = /^[a-zA-Z-]+$/;
+            return re.test(String(name));
+        }
+        function validateAddress(address) {
+            const re = /^[^*|\":<>[\]{}`\\()';@&$]+$/;
+            return re.test(String(address));
+        }
         order.addEventListener("click", (e) => {
             const checkValueInput = () => {
-                function validateEmail(email) {
-                    const re =
-                        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-                    return re.test(String(email).toLowerCase());
-                }
-                function validateName(name) {
-                    const re = /^[a-zA-Z ]([^0-9]*)$/;
-                    return re.test(String(name));
-                }
-                function validateAddress(address) {
-                    const re = /^[^*|\":<>[\]{}`\\()';@&$]+$/;
-                    return re.test(String(address));
-                }
                 if (!validateName(firstName.value)) {
                     firstNameErrorMsg.textContent = "Prénom incorrect !";
                 } else {
@@ -186,12 +188,11 @@ const confirmation = () => {
                 } else {
                     addressErrorMsg.textContent = "";
                 }
-                if (!city.value) {
+                if (!validateName(city.value)) {
                     cityErrorMsg.textContent = "Ville incorrect !";
                 } else {
                     cityErrorMsg.textContent = "";
                 }
-
                 if (!validateEmail(email.value)) {
                     emailErrorMsg.textContent = "Email incorrect !";
                 } else {
@@ -219,11 +220,11 @@ const confirmation = () => {
         let products = [];
         if (
             cart.length !== 0 &&
-            firstName.value &&
-            lastName.value &&
-            address.value &&
+            validateName(firstName.value) &&
+            validateName(lastName.value) &&
+            validateAddress(address.value) &&
             city.value &&
-            email.value
+            validateEmail(email.value)
         ) {
             for (let i = 0; i < cart.length; i++) {
                 products.push(JSON.parse(allStorage()[i])._id);
@@ -258,6 +259,8 @@ const confirmation = () => {
         } else if (cart.length === 0) {
             alert("Pas de produit dans votre panier");
             console.log("error");
+        } else {
+            console.log("Formulaire incorrect !");
         }
     });
 };

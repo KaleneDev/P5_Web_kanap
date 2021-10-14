@@ -97,6 +97,8 @@ const checkProductCurrently = () => {
                 ".item__content__titlePrice h1"
             ).textContent;
             const keyConca = nameProduct + " color: " + color;
+            console.log(keyConca);
+
             if (keyConca === key) {
                 quantity = JSON.parse(localStorage.getItem(key)).quantity;
                 warningProductExist.textContent =
@@ -104,11 +106,10 @@ const checkProductCurrently = () => {
                     quantity +
                     " exemplaire de ce produit !";
                 warningProductExist.style = "color: #D33513";
-                console.log("Same product");
-            } else {
+                console.log("test1");
+            } else if (keyConca !== key) {
+                const warningProductExist = document.querySelector(".item__content__settings__quantity span");
                 warningProductExist.textContent = "";
-
-                console.log("Not same product");
             }
         });
     });
