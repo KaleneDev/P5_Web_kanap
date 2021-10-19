@@ -90,15 +90,22 @@ const checkProductCurrently = () => {
     );
     const warningProductExist = document.createElement("span");
     item__content__settings__quantity.appendChild(warningProductExist);
-    allStorage().map((key) => {
-        colors.addEventListener("change", (e) => {
-            color = e.target.value;
-            nameProduct = e.path[3].querySelector(
-                ".item__content__titlePrice h1"
-            ).textContent;
-            const keyConca = nameProduct + " color: " + color;
-            console.log(keyConca);
 
+    colors.addEventListener("change", (e) => {
+        color = e.target.value;
+        nameProduct = e.path[3].querySelector(
+            ".item__content__titlePrice h1"
+        ).textContent;
+        const keyConca = nameProduct + " color: " + color;
+        allStorage().map((key) => {
+            if (keyConca !== key) {
+                const warningProductExist = document.querySelector(
+                    ".item__content__settings__quantity span"
+                );
+                warningProductExist.textContent = "";
+            }
+        });
+        allStorage().map((key) => {
             if (keyConca === key) {
                 quantity = JSON.parse(localStorage.getItem(key)).quantity;
                 warningProductExist.textContent =
@@ -106,10 +113,6 @@ const checkProductCurrently = () => {
                     quantity +
                     " exemplaire de ce produit !";
                 warningProductExist.style = "color: #D33513";
-                console.log("test1");
-            } else if (keyConca !== key) {
-                const warningProductExist = document.querySelector(".item__content__settings__quantity span");
-                warningProductExist.textContent = "";
             }
         });
     });
