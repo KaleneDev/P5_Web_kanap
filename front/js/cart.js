@@ -99,8 +99,12 @@ const changeQuantity = () => {
             const localeStorageProduct = localStorage.getItem(key);
             const product = JSON.parse(localeStorageProduct);
             product.quantity = parseInt(QuantityValue);
-            localStorage.setItem(key, JSON.stringify(product));
-            pQuantity[i].textContent = "Qté :" + product.quantity;
+            if (product.quantity === 0 || product.quantity > 100) {
+                alert("Choisissez une quantité entre 1-100");
+            } else {
+                localStorage.setItem(key, JSON.stringify(product));
+                pQuantity[i].textContent = "Qté :" + product.quantity;
+            }
             total();
         });
     }
@@ -110,6 +114,7 @@ const deleteProduct = () => {
     for (let i = 0; i < deleteProduct.length; i++) {
         deleteProduct[i].addEventListener("click", (e) => {
             const key = e.path[2].getAttribute("data-key");
+            // const key = deleteProduct[i].closest(".cart__item").getAttribute("data-key");
             localStorage.removeItem(key);
             console.log(key + "est bien supprimé !");
             location.reload();
@@ -218,7 +223,12 @@ const confirmation = () => {
         let cart = allStorage();
         let contact = {};
         let products = [];
+
+        if (cart.quantity === 0 || cart.quantity > 100) {
+            alert("Choisissez une quantité entre 1-100");
+        }
         if (
+            (cart.quantity !== 0 || cart.quantity > 100) &&
             cart.length !== 0 &&
             validateName(firstName.value) &&
             validateName(lastName.value) &&

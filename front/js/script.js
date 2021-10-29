@@ -36,3 +36,4 @@ const display = () => {
     }
 };
 fetchProducts().then(() => display());
+

@@ -25,14 +25,24 @@ const display = () => {
         price.textContent = `${(products.price / 10).toFixed(2)}`;
         description.textContent = `${products.description}`;
 
-        let colorsProduct = [];
-        products.colors.map((color) => {
-            const option = document.createElement("option");
-            option.setAttribute("value", color);
-            option.textContent = color;
-            colors.appendChild(option);
-        });
-        colors.innerHTML += `${colorsProduct.join("")}`;
+        // let colorsProduct = [];
+        // products.colors.map((color) => {
+        //     const option = document.createElement("option");
+        //     option.setAttribute("value", color);
+        //     option.textContent = color;
+        //     colors.appendChild(option);
+        //     console.log(color);
+        // });
+        // colors.innerHTML += `${colorsProduct.join("")}`;
+
+        colors.innerHTML += products.colors
+            .map(
+                (color) =>
+                    `
+            <option value="${color}">${color}</option>
+           `
+            )
+            .join("");
     }
 };
 
