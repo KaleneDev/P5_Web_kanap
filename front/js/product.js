@@ -45,7 +45,6 @@ const display = () => {
             .join("");
     }
 };
-
 const addToCard = () => {
     const addToCartId = document.getElementById("addToCart");
 
@@ -70,7 +69,6 @@ const addToCard = () => {
                 ".item__content__settings__quantity span"
             );
             products.quantity = parseInt(quantity);
-            products.color = color;
             localStorage.setItem(
                 productLocalStorageName,
                 JSON.stringify(products)

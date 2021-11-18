@@ -113,11 +113,12 @@ const deleteProduct = () => {
     const deleteProduct = document.querySelectorAll(".deleteItem");
     for (let i = 0; i < deleteProduct.length; i++) {
         deleteProduct[i].addEventListener("click", (e) => {
-            const key = e.path[2].getAttribute("data-key");
-            // const key = deleteProduct[i].closest(".cart__item").getAttribute("data-key");
+            const key = deleteProduct[i].closest(".cart__item").getAttribute("data-key")
+            const article = deleteProduct[i].closest(".cart__item");
+            article.remove();
             localStorage.removeItem(key);
             console.log(key + "est bien supprimé !");
-            location.reload();
+            total();
         });
     }
 };
@@ -261,8 +262,7 @@ const confirmation = () => {
                 .then((data) => {
                     localStorage.clear();
                     localStorage.setItem("orderId", data.orderId);
-                    document.location.href =
-                        "http://127.0.0.1:5500/front/html/confirmation.html";
+                    document.location.href = `http://127.0.0.1:5500/front/html/confirmation.html?id=${data.orderId}`;
                 });
 
             // alert("Votre commande à bien était pris en compte");
@@ -275,7 +275,7 @@ const confirmation = () => {
     });
 };
 display();
-changeQuantity();
 total();
+changeQuantity();
 deleteProduct();
 confirmation();
