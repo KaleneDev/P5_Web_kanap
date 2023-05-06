@@ -113,7 +113,9 @@ const deleteProduct = () => {
     const deleteProduct = document.querySelectorAll(".deleteItem");
     for (let i = 0; i < deleteProduct.length; i++) {
         deleteProduct[i].addEventListener("click", (e) => {
-            const key = deleteProduct[i].closest(".cart__item").getAttribute("data-key")
+            const key = deleteProduct[i]
+                .closest(".cart__item")
+                .getAttribute("data-key");
             const article = deleteProduct[i].closest(".cart__item");
             article.remove();
             localStorage.removeItem(key);
@@ -170,7 +172,6 @@ const confirmation = () => {
         }
         function validateName(name) {
             const re = /^[a-zA-Z ]([^0-9]*)$/;
-            // const re = /^[a-zA-Z-]+$/;
             return re.test(String(name));
         }
         function validateAddress(address) {
@@ -261,7 +262,6 @@ const confirmation = () => {
                 })
                 .then((data) => {
                     localStorage.clear();
-                    localStorage.setItem("orderId", data.orderId);
                     document.location.href = `http://127.0.0.1:5500/front/html/confirmation.html?id=${data.orderId}`;
                 });
 

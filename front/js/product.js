@@ -25,16 +25,6 @@ const display = () => {
         price.textContent = `${(products.price / 10).toFixed(2)}`;
         description.textContent = `${products.description}`;
 
-        // let colorsProduct = [];
-        // products.colors.map((color) => {
-        //     const option = document.createElement("option");
-        //     option.setAttribute("value", color);
-        //     option.textContent = color;
-        //     colors.appendChild(option);
-        //     console.log(color);
-        // });
-        // colors.innerHTML += `${colorsProduct.join("")}`;
-
         colors.innerHTML += products.colors
             .map(
                 (color) =>
@@ -56,14 +46,6 @@ const addToCard = () => {
         if (quantity > 100 || quantity === 0 || color === "") {
             console.log("Choisissez une quantité entre 1-100 et une couleur");
             alert("Choisissez une quantité entre 1-100 et une couleur");
-        } else if (localStorage.getItem(productLocalStorageName) === null) {
-            products.quantity = quantity;
-            products.color = color;
-            localStorage.setItem(
-                productLocalStorageName,
-                JSON.stringify(products)
-            );
-            console.log(products.name + "a bien était ajouter a votre panier");
         } else if (localStorage.getItem(productLocalStorageName) !== null) {
             const warningProductExist = document.querySelector(
                 ".item__content__settings__quantity span"
@@ -76,6 +58,14 @@ const addToCard = () => {
             warningProductExist.textContent =
                 "Vous avez " + quantity + " exemplaire de ce produit !";
             warningProductExist.style = "color: #D33513";
+            console.log(products.name + "a bien était ajouter a votre panier");
+        } else if (localStorage.getItem(productLocalStorageName) === null) {
+            products.quantity = quantity;
+            products.color = color;
+            localStorage.setItem(
+                productLocalStorageName,
+                JSON.stringify(products)
+            );
             console.log(products.name + "a bien était ajouter a votre panier");
         } else {
             console.log("Une erreur est survenue");
