@@ -94,7 +94,10 @@ const changeQuantity = () => {
 
     for (let i = 0; i < quantity.length; i++) {
         quantity[i].addEventListener("change", (e) => {
-            const key = e.path[3].getAttribute("data-key");
+            const key =
+                e.target.parentElement.parentElement.parentElement.getAttribute(
+                    "data-key"
+                );
             const QuantityValue = quantity[i].value;
             const localeStorageProduct = localStorage.getItem(key);
             const product = JSON.parse(localeStorageProduct);
@@ -102,6 +105,7 @@ const changeQuantity = () => {
             if (product.quantity === 0 || product.quantity > 100) {
                 alert("Choisissez une quantité entre 1-100");
             } else {
+            
                 localStorage.setItem(key, JSON.stringify(product));
                 pQuantity[i].textContent = "Qté :" + product.quantity;
             }
@@ -215,6 +219,7 @@ const confirmation = () => {
         const allStorage = () => {
             let values = [];
             let keys = Object.keys(localStorage);
+            console.log(keys);
             let i = keys.length;
 
             for (let index = 0; index < i; index++) {
